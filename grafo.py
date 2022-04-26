@@ -1,10 +1,8 @@
+import random
+
 """
 UTIL
 """
-
-from operator import truediv
-from tkinter.tix import Tree
-from turtle import position
 
 
 LINHAS = {
@@ -95,7 +93,6 @@ def matrizAdjacencia(sdk):
             
 _grafo_ = matrizAdjacencia(baseMatriz())
 
-
 """
 2.1) CHECAR PROPOSTA VÁLIDA:
 """
@@ -126,11 +123,47 @@ def checagem(proposta):
 
 PROPOSTA = ["5","3",".",".","7",".",".",".",".","6",".",".","1","9","5",".",".",".",".","9","8",".",".",".",".","6",".","8",".",".",".","6",".",".",".","3","4",".",".","8",".","3",".",".","1","7",".",".",".","2",".",".",".","6",".","6",".",".",".",".","2","8",".",".",".",".","4","1","9",".",".","5",".",".",".",".","8",".",".","7","9"]
 
+PROPOSTA2 = ['.', 9, 1, '.', '.', '.', 5, '.', 3, 8, 0, '.', 5, '.', '.', '.', '.', '.', '.', '.', '.', '.', 1, '.', '.', '.', '.', '.', 4, 8, '.', '.', '.', '.', 7, '.', 3, '.', '.', '.', '.', '.', 9, '.', 1, '.', '.', 7, '.', '.', '.', '.', 3, '.', '.', '.', 6, 1, 5, 2, '.', '.', 4, '.', 5, '.', 0, '.', 9, '.', '.', '.', '.', '.', 4, '.', '.', 8, '.', 5, '.']
+
+PROPOSTA3 = ['.', 5, '.', '.', '.', '.', 3, '.', '.', 9, '.', '.', '.', 6, '.', 2, 7, '.', '.', '.', 2, 7, 0, 1, '.', '.', 8, '.', '.', '.', '.', 9, '.', '.', '.', '.', '.', '.', 0, 6, 4, '.', 5, '.', '.', 7, '.', '.', 1, '.', '.', 6, '.', '.', '.', '.', 4, 5, '.', 0, '.', '.', '.', '.', 2, '.', 3, 1, '.', 8, '.', '.', '.', 4, '.', 0, 7, '.', '.', '.']
+
 print(checagem(PROPOSTA))
+print(checagem(PROPOSTA2))
+print(checagem(PROPOSTA3))
 
 
 """
 2.3) GERAR PROPOSTAS ALEATÓRIAS PARA FUTUROS JOGOS
 """
+"""
+Primeiramente estou gerando uma posicao e um numero aleatório
+Depois faco a verificacao se meu ponto de adjacencia é true e o valor randomico passado é diferente 
+"""
+def gerar_proposta():
+    proposta = ["."]*81
 
-   
+    _numero_ = random.randint(0,9)
+    _posicao_ = random.randint(0,80)
+
+    proposta[_posicao_] = _numero_
+
+    for c in range(0, 50):
+        numero = random.randint(0,9)
+        posicao = random.randint(0,80)
+        count = 0
+
+        if proposta[posicao] == ".":
+            for p in range(len(_grafo_[posicao])):
+                # print(p, _grafo_[posicao][p])
+                adjacencia = _grafo_[posicao][p]
+                if adjacencia == True and proposta[p] != numero:
+                    count+=1
+                if count == 21:
+                    proposta[posicao] = numero
+    return(proposta)
+
+
+
+
+
+print(gerar_proposta())
