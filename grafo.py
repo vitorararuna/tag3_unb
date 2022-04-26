@@ -1,3 +1,11 @@
+"""
+UTIL
+"""
+
+from operator import truediv
+from tkinter.tix import Tree
+from turtle import position
+
 
 LINHAS = {
     0: [0, 1,2, 3, 4, 5, 6, 7, 8],
@@ -35,22 +43,16 @@ BLOCOS = {
     8: [60,61,62,69,70,71,78,79,80],
 }
 
+"""
+1) MODELAGEM DE UM SUDOKU EM GRAFO
+"""
 
-# def baseMatriz(ordem):
-#     vertices = ordem*ordem
-#     matriz=[]
-#     for c in range(vertices):
-#         matriz.append([])
-#     print(matriz)
-#     return matriz
-
-def baseMatriz(v):
-    vertices = v
+def baseMatriz():
+    vertices = 81
     sdk = dict()
     for c in range(vertices):
         sdk[c] = []
     return sdk
-
 
 def verifica_linha(i, j):
     count = 0
@@ -79,8 +81,8 @@ def verifica_bloco(i, j):
         count = 0
     return False
 
-
-#Formacao da matriz adjacencia que 
+#Formacao da matriz adjacencia que representa um dicionário com cada vertice e seus respectivos booleanos para todos os outros demais vertices (incluindo ele mesmo)
+#Logo, cada chave vai ter um array que armazena 81 tipos booleanos que representa tal conectivdade com o vertice de indice tal 
 def matrizAdjacencia(sdk):
     for i in sdk: # 0-80
         for j in sdk:
@@ -89,12 +91,46 @@ def matrizAdjacencia(sdk):
             elif verifica_coluna(i, j) == True: sdk[i].append(True)
             elif verifica_bloco(i, j) == True: sdk[i].append(True)
             else: sdk[i].append(False)
-    print(sdk)
+    return(sdk)
             
+_grafo_ = matrizAdjacencia(baseMatriz())
 
 
-# verifica_linha()
+"""
+2.1) CHECAR PROPOSTA VÁLIDA:
+"""
+"""
+Percorrendo minhas propostas e validando:
+    Caso a posicao de uma proposta tenha um TRUE como valor na posicao referente a modelagem, as 2 posicoes DEVEM ser diferentes
+"""
 
-matrizAdjacencia(baseMatriz(81))
+def checagem(proposta):
+    dict_proposta = dict()
+
+    for c in range(len(proposta)):
+        if proposta[c] != ".":
+            dict_proposta[c] = proposta[c]
+
+    for posicao in dict_proposta:
+        if(posicao == 0):
+            numero = dict_proposta[posicao]
+            for p in range(len(_grafo_[posicao])): ## sequencia de booleanos
+                # print(p, _grafo_[posicao][p])
+                if posicao != p:
+                    adjacencia = _grafo_[posicao][p] #bool
+                    if adjacencia == True: # logo, nao posso ter o mesmo numero em uma adjacencia verdadeira
+                         if p in dict_proposta:
+                             if dict_proposta[p] == numero:   
+                                 return False
+    return True
+
+PROPOSTA = ["5","3",".",".","7",".",".",".",".","6",".",".","1","9","5",".",".",".",".","9","8",".",".",".",".","6",".","8",".",".",".","6",".",".",".","3","4",".",".","8",".","3",".",".","1","7",".",".",".","2",".",".",".","6",".","6",".",".",".",".","2","8",".",".",".",".","4","1","9",".",".","5",".",".",".",".","8",".",".","7","9"]
+
+print(checagem(PROPOSTA))
 
 
+"""
+2.3) GERAR PROPOSTAS ALEATÓRIAS PARA FUTUROS JOGOS
+"""
+
+   
