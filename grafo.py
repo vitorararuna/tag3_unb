@@ -4,7 +4,6 @@ import random
 UTIL
 """
 
-
 LINHAS = {
     0: [0, 1,2, 3, 4, 5, 6, 7, 8],
     1: [9,10,11,12,13,14,15,16,17],
@@ -40,6 +39,15 @@ BLOCOS = {
     7: [57,58,59,66,67,68,75,76,77],
     8: [60,61,62,69,70,71,78,79,80],
 }
+
+PROPOSTA = ["5","3",".",".","7",".",".",".",".","6",".",".","1","9","5",".",".",".",".","9","8",".",".",".",".","6",".","8",".",".",".","6",".",".",".","3","4",".",".","8",".","3",".",".","1","7",".",".",".","2",".",".",".","6",".","6",".",".",".",".","2","8",".",".",".",".","4","1","9",".",".","5",".",".",".",".","8",".",".","7","9"]
+
+PROPOSTA2 = [9, 9, 1, 9, '.', '.', 5, '.', 3, 8, 0, '.', 5, '.', '.', '.', '.', '.', '.', '.', '.', '.', 1, '.', '.', '.', '.', '.', 4, 8, '.', '.', '.', '.', 7, '.', 3, '.', '.', '.', '.', '.', 9, '.', 1, '.', '.', 7, '.', '.', '.', '.', 3, '.', '.', '.', 6, 1, 5, 2, '.', '.', 4, '.', 5, '.', 0, '.', 9, '.', '.', '.', '.', '.', 4, '.', '.', 8, '.', 5, '.']
+
+PROPOSTA3 = ['.', 5, '.', '.', '.', '.', 3, '.', '.', 9, '.', '.', '.', 6, '.', 2, 7, '.', '.', '.', 2, 7, 0, 1, '.', '.', 8, '.', '.', '.', '.', 9, '.', '.', '.', '.', '.', '.', 0, 6, 4, '.', 5, '.', '.', 7, '.', '.', 1, '.', '.', 6, '.', '.', '.', '.', 4, 5, '.', 0, '.', '.', '.', '.', 2, '.', 3, 1, '.', 8, '.', '.', '.', 4, '.', 0, 7, '.', '.', '.']
+
+
+
 
 """
 1) MODELAGEM DE UM SUDOKU EM GRAFO
@@ -92,6 +100,10 @@ def matrizAdjacencia(sdk):
     return(sdk)
             
 _grafo_ = matrizAdjacencia(baseMatriz())
+print("\n\n\n\n")
+print("@@@@@@@@@@@@ MODELAGEM COM AS POSICOES E SEUS BOOLEANOS DE ADJACENCIA COM AS DEMAIS POSICOES: @@@@@@@@@@@@")
+print("\n\n\n\n")
+print(_grafo_)
 
 """
 2.1) CHECAR PROPOSTA VÁLIDA:
@@ -121,15 +133,13 @@ def checagem(proposta):
                                  return False
     return True
 
-PROPOSTA = ["5","3",".",".","7",".",".",".",".","6",".",".","1","9","5",".",".",".",".","9","8",".",".",".",".","6",".","8",".",".",".","6",".",".",".","3","4",".",".","8",".","3",".",".","1","7",".",".",".","2",".",".",".","6",".","6",".",".",".",".","2","8",".",".",".",".","4","1","9",".",".","5",".",".",".",".","8",".",".","7","9"]
 
-PROPOSTA2 = ['.', 9, 1, '.', '.', '.', 5, '.', 3, 8, 0, '.', 5, '.', '.', '.', '.', '.', '.', '.', '.', '.', 1, '.', '.', '.', '.', '.', 4, 8, '.', '.', '.', '.', 7, '.', 3, '.', '.', '.', '.', '.', 9, '.', 1, '.', '.', 7, '.', '.', '.', '.', 3, '.', '.', '.', 6, 1, 5, 2, '.', '.', 4, '.', 5, '.', 0, '.', 9, '.', '.', '.', '.', '.', 4, '.', '.', 8, '.', 5, '.']
-
-PROPOSTA3 = ['.', 5, '.', '.', '.', '.', 3, '.', '.', 9, '.', '.', '.', 6, '.', 2, 7, '.', '.', '.', 2, 7, 0, 1, '.', '.', 8, '.', '.', '.', '.', 9, '.', '.', '.', '.', '.', '.', 0, 6, 4, '.', 5, '.', '.', 7, '.', '.', 1, '.', '.', 6, '.', '.', '.', '.', 4, 5, '.', 0, '.', '.', '.', '.', 2, '.', 3, 1, '.', 8, '.', '.', '.', 4, '.', 0, 7, '.', '.', '.']
-
-print(checagem(PROPOSTA))
-print(checagem(PROPOSTA2))
-print(checagem(PROPOSTA3))
+print("\n\n\n\n")
+print("@@@@@@@@@@@@ CHECAGEM DE PROPOSTAS ENVIADAS PARA VALIDAR SUDOKU: @@@@@@@@@@@@")
+print("\n\n\n\n")
+print("PROPOSTA1",checagem(PROPOSTA))
+print("PROPOSTA2",checagem(PROPOSTA2))
+print("PROPOSTA3",checagem(PROPOSTA3))
 
 
 """
@@ -137,7 +147,8 @@ print(checagem(PROPOSTA3))
 """
 """
 Primeiramente estou gerando uma posicao e um numero aleatório
-Depois faco a verificacao se meu ponto de adjacencia é true e o valor randomico passado é diferente 
+Depois faco a verificacao se meu ponto de adjacencia é true e o valor randomico passado é diferente das demais combinacoes. Caso isso ocorra 
+para as 21 situacoes de adjacencia, eu adiciono o valor para a proposta aleatoria
 """
 def gerar_proposta():
     proposta = ["."]*81
@@ -163,7 +174,57 @@ def gerar_proposta():
     return(proposta)
 
 
-
-
-
+print("\n\n\n\n")
+print("@@@@@@@@@@@@ GERANDO PROPOSTAS ALEATÓRIOAS PARA FUTOROS JOGOS: @@@@@@@@@@@@")
+print("\n\n\n\n")
+print("1:\n")
 print(gerar_proposta())
+print("2:\n")
+print(gerar_proposta())
+print("3:\n")
+print(gerar_proposta())
+
+
+
+"""
+2.2) gerar soluções e apresentá-las em tela;
+"""
+"""
+
+Essa parte da tarefa deixei um pouco mais sofisticada, uma vez que consgio gerar um jogo com o gabarito, caso nenhuma proposta seja definida dentro do método.
+estou gerando números aleatórios válidos para as posicoes randomicas e seus valores também gerados aletóriamente, para que os pontos de adjacencia coincidam
+"""
+
+def gerar_respostas():
+    #AQUI POSSO PASSAR UM JOGO COM UMA PROPOSTA JA EXISTENTE QUE O ALGORITMO PREENCHER O RESTANTE COM MAIS RAPIDEZ
+    #DESSA FORMA, ESTOU GERANDO UM JOGO JÁ COM AS RESPOSTAS DO SUDOKU PRONTAS!
+
+    proposta = ["."]*81
+
+    _numero_ = random.randint(0,9)
+    _posicao_ = random.randint(0,80)
+
+    proposta[_posicao_] = _numero_
+
+    while proposta.count(".") != 0:
+        numero = random.randint(0,9)
+        posicao = random.randint(0,80)
+        count = 0
+
+        if proposta[posicao] == ".":
+            for p in range(len(_grafo_[posicao])):
+                # print(p, _grafo_[posicao][p])
+                adjacencia = _grafo_[posicao][p]
+                if adjacencia == True and proposta[p] != numero:
+                    count+=1
+                if count == 21:
+                    proposta[posicao] = numero
+    return(proposta)
+
+
+print("\n\n\n\n")
+print("@@@@@@@@@@@@ GERANDO GABARITO PARA O SUDOKU: @@@@@@@@@@@@\n")
+print("OBS.: EDITE A PROPOSTA INICIAL PARA QUE O ALGORITMO EXECUTE MAIS RÁPIDOn")
+print("\n\n\n\n")
+
+print(gerar_respostas())
